@@ -1,6 +1,6 @@
 import random
 import tkinter as tk
-
+from tkinter import ttk
 
 def generate_numbers():
     try:
@@ -14,26 +14,25 @@ def generate_numbers():
 
     result_box.delete(1.0, tk.END)
 
-    numbers = [random.random() for _ in range(N)]
-
     # Hlavička tabuľky
     header = f"{'Číslo (0–1)':<20}{'Percentá':<20}{f'Zaokrúhlené ({D})':<20}\n"
     result_box.insert(tk.END, header)
     result_box.insert(tk.END, "-" * 60 + "\n")
 
-    # Riadky tabuľky
+    numbers = [random.random() for _ in range(N)]
+
     for num in numbers:
         percent = num * 100
         rounded = round(percent, D)
 
+        # Formátovaný riadok – čitateľný a zarovnaný
         line = (
-            f"{num:<20}"               # číslo 0–1
-            f"{percent:<20}"           # v percentách
-            f"{rounded:<20}"           # zaokrúhlené
+            f"{num:<20.10f}"           # 0–1, 10 desatinných miest
+            f"{percent:<20.10f}"       # percentá
+            f"{rounded:<20.{D}f}"      # zaokrúhlené podľa slidera
             + "\n"
         )
         result_box.insert(tk.END, line)
-
 
 # UI
 window = tk.Tk()
@@ -63,4 +62,3 @@ result_box = tk.Text(window, height=20, width=60, font=("Courier New", 10))
 result_box.pack()
 
 window.mainloop()
-
