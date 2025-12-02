@@ -1,6 +1,5 @@
 import random
 import tkinter as tk
-from tkinter import ttk
 
 
 def generate_numbers():
@@ -17,24 +16,26 @@ def generate_numbers():
 
     numbers = [random.random() for _ in range(N)]
 
-    result_box.insert(tk.END, f"Vygenerované čísla (0–1):\n")
-    for num in numbers:
-        result_box.insert(tk.END, f"{num}\n")
+    # Hlavička tabuľky
+    header = f"{'Číslo (0–1)':<20}{'Percentá':<20}{f'Zaokrúhlené ({D})':<20}\n"
+    result_box.insert(tk.END, header)
+    result_box.insert(tk.END, "-" * 60 + "\n")
 
-    result_box.insert(tk.END, "\nPercentá:\n")
-    for num in numbers:
-        percent = num * 100
-        result_box.insert(tk.END, f"{percent}%\n")
-
-    result_box.insert(tk.END, f"\nZaokrúhlené na {D} miest:\n")
+    # Riadky tabuľky
     for num in numbers:
         percent = num * 100
         rounded = round(percent, D)
-        result_box.insert(tk.END, f"{rounded}%\n")
+
+        line = (
+            f"{num:<20}"               # číslo 0–1
+            f"{percent:<20}"           # v percentách
+            f"{rounded:<20}"           # zaokrúhlené
+            + "\n"
+        )
+        result_box.insert(tk.END, line)
 
 
-
-
+# UI
 window = tk.Tk()
 window.title("Generátor čísel 0–1 → percentá")
 
@@ -53,12 +54,13 @@ slider_D = tk.Scale(frame, from_=0, to=10, orient=tk.HORIZONTAL)
 slider_D.set(2)
 slider_D.grid(row=1, column=1, sticky="we")
 
-# Tlačitko
+# Tlačidlo
 btn = ttk.Button(frame, text="Generovať", command=generate_numbers)
 btn.grid(row=2, column=0, columnspan=2, pady=10)
 
 # Výstupné okno
-result_box = tk.Text(window, height=20, width=50)
+result_box = tk.Text(window, height=20, width=60, font=("Courier New", 10))
 result_box.pack()
 
 window.mainloop()
+
